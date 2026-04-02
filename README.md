@@ -4,6 +4,8 @@ Application web GIS open-source pour visualiser et explorer les pentes cyclables
 
 Projet portfolio construit pour apprendre la stack SDI open-source — une alternative 100 % libre à ArcGIS Pro + ArcGIS Server.
 
+![Screenshot of the app](/images/screenshot.png)
+
 ---
 
 ## Aperçu
