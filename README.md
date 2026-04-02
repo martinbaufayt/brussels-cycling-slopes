@@ -112,7 +112,7 @@ Les fichiers de données sont trop lourds pour Git et ne sont pas versionnés.
 
 **Modèle numérique de terrain LiDAR 50cm - Lambert Belge 1972 (Fichier TIFF, ~4.4 GB)**
 
-Disponible sur [datastore.brussels.be]([https://www.geo.be](https://datastore.brussels/web/data/dataset/1d7bd49d-fe83-4388-af85-6f5dc8ec7909#access)). Données fournies par Paradigm.
+Disponible sur [datastore.brussels.be]([https://www.geo.be](https://datastore.brussels/web/data/dataset/1d7bd49d-fe83-4388-af85-6f5dc8ec7909#access). Données fournies par Paradigm.
 
 À placer dans `data/raw/BrusselsMNT_50cm.tif`.
 
