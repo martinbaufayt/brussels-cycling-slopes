@@ -193,7 +193,7 @@ Ouvrir `frontend/index.html` dans le navigateur.
 | Réseau cyclable | OpenStreetMap via Overpass API | ODbL |
 | MNT LiDAR 0.5m | Bruxelles-Capitale (UrbIS/Paradigm) | CC-0 |
 | Basemap photo aérienne | UrbIS Ortho 2024 (WMTS) | CC-0 |
-| Basemap CartoDB Positron| CartoDB Positron - OpenStreetMap Contributors  CC-0 |
+| Basemap CartoDB Positron| CartoDB Positron - OpenStreetMap Contributors | CC-0 |
 
 ---
 
