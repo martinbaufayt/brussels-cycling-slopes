@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brussels Cycling Slopes</title>
+
+    <!--
+        Leaflet — bibliothèque de cartographie web open-source.
+        On la charge depuis un CDN (Content Delivery Network) :
+        pas besoin de l'installer, le navigateur la télécharge directement.
+    -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- ── Header ──────────────────────────────────────────────────────── -->
+    <header>
+        <div>
+            <h1>Brussels Cycling Slopes</h1>
+            <p>Pentes cyclables de la Région de Bruxelles-Capitale · Données UrbIS + OpenStreetMap</p>
+        </div>
+    </header>
+
+    <!-- ── Layout principal ────────────────────────────────────────────── -->
+    <div class="main-layout">
+
+        <!-- La carte prend tout l'espace restant -->
+        <div id="map">
+            <!-- Loader affiché pendant le chargement du GeoJSON -->
+            <div id="loader">Chargement des pentes…</div>
+        </div>
+
+        <!-- ── Panneau latéral ──────────────────────────────────────── -->
+        <aside class="sidebar">
+
+            <!-- Filtres par difficulté -->
+            <div class="sidebar-section">
+                <h2>Filtrer par difficulté</h2>
+                <div class="filters">
+                    <!--
+                        data-difficulty : attribut personnalisé lu par map.js
+                        onclick         : appelle la fonction setFilter() de map.js
+                    -->
+                    <button class="filter-btn btn-all active"
+                            data-difficulty="all"
+                            onclick="setFilter('all')">
+                        <span class="dot" style="background:#888"></span>
+                        Toutes les pentes (≥ 2%)
+                    </button>
+                    <button class="filter-btn btn-leger"
+                            data-difficulty="leger"
+                            onclick="setFilter('leger')">
+                        <span class="dot color-leger"></span>
+                        Léger (2–4%)
+                    </button>
+                    <button class="filter-btn btn-modere"
+                            data-difficulty="modere"
+                            onclick="setFilter('modere')">
+                        <span class="dot color-modere"></span>
+                        Modéré (4–8%)
+                    </button>
+                    <button class="filter-btn btn-difficile"
+                            data-difficulty="difficile"
+                            onclick="setFilter('difficile')">
+                        <span class="dot color-difficile"></span>
+                        Difficile (8–12%)
+                    </button>
+                    <button class="filter-btn btn-tres_difficile"
+                            data-difficulty="tres_difficile"
+                            onclick="setFilter('tres_difficile')">
+                        <span class="dot color-tres_difficile"></span>
+                        Très difficile (> 12%)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Légende -->
+            <div class="sidebar-section">
+                <h2>Légende</h2>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-line" style="background:#4CAF50"></div>
+                        <span>Léger (2–4%)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-line" style="background:#FFC107"></div>
+                        <span>Modéré (4–8%)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-line" style="background:#FF5722; height:5px"></div>
+                        <span>Difficile (8–12%)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-line" style="background:#B71C1C; height:6px"></div>
+                        <span>Très difficile (> 12%)</span>
+                    </div>
+                    <div class="legend-item" style="margin-top:4px">
+                        <div class="legend-line" style="background:white; border-top: 3px dashed white; height:0px; margin-top:5px"></div>
+                        <span style="color:#888">Déjà fait ✓</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Checklist -->
+            <div class="checklist-header">
+                <h2>Mes pentes</h2>
+                <span id="checklist-count">0</span>
+            </div>
+
+            <div class="checklist-container">
+                <div id="checklist-list">
+                    <!-- Rempli dynamiquement par map.js → loadChecklist() -->
+                </div>
+            </div>
+
+        </aside>
+    </div>
+
+    <script src="js/map.js"></script>
+</body>
+</html>

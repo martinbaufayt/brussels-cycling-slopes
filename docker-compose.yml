@@ -1,0 +1,96 @@
+# ─────────────────────────────────────────────────────────────
+# GIS Open-Source Platform – docker-compose
+#
+# Services:
+#   postgis   → PostgreSQL 16 + PostGIS 3.4
+#   geoserver → GeoServer 2.25.2 (OGC WMS/WFS/WCS)
+#   backend   → FastAPI (spatial analysis API)
+#
+# Démarrage : docker compose up --build
+# ─────────────────────────────────────────────────────────────
+
+services:
+
+  # ── 1. PostGIS ──────────────────────────────────────────────
+  postgis:
+    image: imresamu/postgis:16-3.4  # image PostGIS avec support ARM64 natif (M1/M2/M3/M4)
+    platform: linux/arm64
+    container_name: gis_postgis
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: gisdb
+      POSTGRES_USER: gisuser
+      POSTGRES_PASSWORD: gispassword
+    ports:
+      - "5433:5432"          # 5433 côté hôte → 5432 dans le conteneur (évite le conflit avec un PostgreSQL local)
+    volumes:
+      - postgis_data:/var/lib/postgresql/data          # données persistantes
+      - ./sql:/docker-entrypoint-initdb.d              # scripts SQL exécutés au premier démarrage
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gisuser -d gisdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── 2. GeoServer ────────────────────────────────────────────
+  geoserver:
+    image: kartoza/geoserver:2.25.2
+    platform: linux/arm64            # ARM64 natif pour M4
+    container_name: gis_geoserver
+    restart: unless-stopped
+    depends_on:
+      postgis:
+        condition: service_healthy
+    environment:
+      GEOSERVER_DATA_DIR: /opt/geoserver/data_dir
+      GEOSERVER_ADMIN_USER: admin
+      GEOSERVER_ADMIN_PASSWORD: geoserver
+      # Connexion JDBC vers PostGIS (utilisée pour configurer les datastores)
+      POSTGRES_DB: gisdb
+      POSTGRES_USER: gisuser
+      POSTGRES_PASSWORD: gispassword
+      POSTGRES_HOST: postgis
+      POSTGRES_PORT: 5432
+    ports:
+      - "8080:8080"          # interface web : http://localhost:8080/geoserver
+    volumes:
+      - geoserver_data:/opt/geoserver/data_dir
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/geoserver/web/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # ── 3. FastAPI backend ───────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: gis_backend
+    restart: unless-stopped
+    depends_on:
+      postgis:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://gisuser:gispassword@postgis:5432/gisdb
+      GEOSERVER_URL: http://geoserver:8080/geoserver
+    ports:
+      - "8000:8000"          # API : http://localhost:8000
+    volumes:
+      - ./backend:/app       # hot-reload en développement
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+
+# ── Volumes nommés (données persistantes entre les redémarrages) ──
+volumes:
+  postgis_data:
+  geoserver_data:
+
+# ── Réseau interne (les services se parlent par leur nom de service) ──
+networks:
+  default:
+    name: gis_network

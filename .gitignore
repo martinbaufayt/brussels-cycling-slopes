@@ -1,0 +1,31 @@
+# ── Données brutes ────────────────────────────────────────────────────────────
+# Le MNT LiDAR (4.4 GB) et le GeoJSON OSM sont trop lourds pour Git.
+# Quelqu'un qui clone le projet devra les télécharger séparément (voir README).
+data/raw/
+
+# Le dossier processed peut contenir des fichiers générés intermédiaires
+data/processed/
+
+# ── Python ────────────────────────────────────────────────────────────────────
+# Bytecode compilé par Python — spécifique à la machine, inutile à versionner
+__pycache__/
+*.pyc
+*.pyo
+
+# Environnements virtuels Python (si créés localement)
+.venv/
+venv/
+env/
+
+# ── Variables d'environnement ─────────────────────────────────────────────────
+# Ne jamais versionner les secrets (mots de passe, clés API)
+.env
+.env.*
+
+# ── macOS ─────────────────────────────────────────────────────────────────────
+# Fichiers cachés créés automatiquement par le Finder — inutiles sur Git
+.DS_Store
+
+# ── Claude Code ───────────────────────────────────────────────────────────────
+# Configuration locale de l'assistant IA — propre à cette machine
+.claude/
