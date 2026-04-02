@@ -1,6 +1,6 @@
 # Brussels Cycling Slopes
 
-Plateforme GIS open-source pour visualiser et explorer les pentes cyclables de la Région de Bruxelles-Capitale.
+Application web GIS open-source pour visualiser et explorer les pentes cyclables de la Région de Bruxelles-Capitale.
 
 Projet portfolio construit pour apprendre la stack SDI open-source — une alternative 100 % libre à ArcGIS Pro + ArcGIS Server.
 
@@ -9,7 +9,7 @@ Projet portfolio construit pour apprendre la stack SDI open-source — une alter
 ## Aperçu
 
 - **58 845 tronçons** du réseau cyclable bruxellois (OpenStreetMap)
-- **64 875 segments de pente** calculés à partir du MNT LiDAR à 0,5 m de résolution
+- **64 875 segments de pente d'une longueur de 50m** calculés à partir du MNT LiDAR à 0,5 m de résolution
 - Visualisation interactive par niveau de difficulté (léger / modéré / difficile / très difficile)
 - Widget checklist pour suivre les pentes déjà parcourues
 
@@ -110,8 +110,10 @@ cd brussels-cycling-slopes
 
 Les fichiers de données sont trop lourds pour Git et ne sont pas versionnés.
 
-**MNT LiDAR (BrusselsMNT_50cm.tif, ~4.4 GB)**
-Disponible sur [geo.be](https://www.geo.be) ou via le portail données de Bruxelles.
+**Modèle numérique de terrain LiDAR 50cm - Lambert Belge 1972 (Fichier TIFF, ~4.4 GB)**
+
+Disponible sur [datastore.brussels.be]([https://www.geo.be](https://datastore.brussels/web/data/dataset/1d7bd49d-fe83-4388-af85-6f5dc8ec7909#access)). Données fournies par Paradigm.
+
 À placer dans `data/raw/BrusselsMNT_50cm.tif`.
 
 **Réseau cyclable OSM (généré automatiquement)**
@@ -138,7 +140,7 @@ ogr2ogr -f "PostgreSQL" \
   data/raw/brussels_cycling_roads.geojson \
   -nln cycling_roads -overwrite
 
-# Calculer les pentes (prend ~10 min)
+# Calculer les pentes
 python3 data/compute_slopes.py
 ```
 
@@ -189,19 +191,19 @@ Ouvrir `frontend/index.html` dans le navigateur.
 | Donnée | Source | Licence |
 |--------|--------|---------|
 | Réseau cyclable | OpenStreetMap via Overpass API | ODbL |
-| MNT LiDAR 0.5m | Bruxelles-Capitale (UrbIS) | CC-0 |
+| MNT LiDAR 0.5m | Bruxelles-Capitale (UrbIS/Paradigm) | CC-0 |
 | Basemap photo aérienne | UrbIS Ortho 2024 (WMTS) | CC-0 |
+| Basemap CartoDB Positron| CartoDB Positron - OpenStreetMap Contributors  CC-0 |
 
 ---
 
 ## Objectifs pédagogiques
 
-- Comprendre le fonctionnement d'une Infrastructure de Données Spatiales (IDS/SDI)
+- Comprendre le développement full-stack d'une application web GIS en utilisant des technologies open-source
 - Maîtriser les fonctions PostGIS : `ST_AsGeoJSON`, `ST_Transform`, `ST_Buffer`, index GIST
 - Utiliser GeoServer pour publier des couches OGC WMS avec style SLD
 - Construire une API REST qui retourne du GeoJSON avec FastAPI
 - Conteneuriser une stack multi-services avec Docker Compose
-- Différencier WMS, WMTS et WFS dans un contexte réel
 
 ---
 
