@@ -117,6 +117,9 @@ Disponible sur ([https://www.datastore.brussels.be](https://datastore.brussels/w
 À placer dans `data/raw/BrusselsMNT_50cm.tif`.
 
 **Réseau cyclable OSM (généré automatiquement)**
+
+Le script download_osm_brussels.py interroge l'Overpass API (accès gratuit à la base OpenStreetMap) pour extraire tous les tronçons praticables à vélo dans la Région de Bruxelles-Capitale. Il filtre par type de route (highway) et par autorisation vélo (bicycle != no), puis convertit le résultat du format OSM vers le GeoJSON — le format standard compris par Leaflet et PostGIS. Le fichier produit contient ~58 000 tronçons et est sauvegardé dans data/raw/.
+
 ```bash
 python3 data/download_osm_brussels.py
 # → crée data/raw/brussels_cycling_roads.geojson
